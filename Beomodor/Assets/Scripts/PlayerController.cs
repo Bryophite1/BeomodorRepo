@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D playerRB;
     public SpriteRenderer playerRenderer;
     public Vector2 playerScale;
+    public GameObject singRadius;
+    public ParticleSystem songParticle;
 
     public float moveSpeed;
     public float jumpForce;
@@ -16,6 +18,9 @@ public class PlayerController : MonoBehaviour
     public bool jumpRising;
     public bool directionFlipped;
     public bool gravityReversed;
+    public bool singing;
+    public bool startSinging;
+    public bool landing;
 
     // Start is called before the first frame update
     void Start()
@@ -71,7 +76,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !jumping)
+        if (Input.GetKeyDown(KeyCode.Space) && !jumping && !singing)
         {
             StartCoroutine(Jump());
             //playerRB.velocity = new Vector3(playerRB.velocity.x, jumpForce * Time.deltaTime, 0);
@@ -93,6 +98,44 @@ public class PlayerController : MonoBehaviour
             gravityReversed = false;
         }
 
+        //SINGING
+        if (Input.GetKey(KeyCode.V) && !jumping)
+        {
+            singing = true;
+        }
+        else
+        {
+            singing = false;
+        }
+
+        if (singing)
+        {
+            singRadius.SetActive(true);
+
+            if (!startSinging && Input.GetKeyDown(KeyCode.V) || !startSinging && landing)
+            {
+                StartCoroutine(SingBegin());
+            }
+        }
+        else
+        {
+            singRadius.SetActive(false);
+        }
+
+    }
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (!jumpRising && other.CompareTag("Ground"))
+        {
+            jumping = false;
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!jumpRising && other.CompareTag("Ground"))
+        {
+            StartCoroutine(Land());
+        }
     }
     public IEnumerator Jump()
     {
@@ -103,12 +146,27 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         jumpRising = false;
     }
-
-    private void OnTriggerStay2D(Collider2D collision)
+    public IEnumerator SingBegin()
     {
-        if (!jumpRising)
+        startSinging = true;
+        yield return new WaitForSeconds(0.1f);
+        startSinging = false;
+        StartCoroutine(SingParticles());
+        StopCoroutine(SingBegin());
+    }
+    public IEnumerator SingParticles()
+    {
+        yield return new WaitForSeconds(0.1f);
+        songParticle.Emit(1);
+        if (singing)
         {
-            jumping = false;
+            StartCoroutine(SingParticles());
         }
+    }
+    public IEnumerator Land()
+    {
+        landing = true;
+        yield return new WaitForSeconds(0.1f);
+        landing = false;
     }
 }
