@@ -3612,8 +3612,8 @@ ParticleSystem:
   CollisionModule:
     enabled: 0
     serializedVersion: 4
-    type: 0
-    collisionMode: 0
+    type: 1
+    collisionMode: 1
     colliderForce: 0
     multiplyColliderForceByParticleSize: 0
     multiplyColliderForceByParticleSpeed: 0
@@ -3675,7 +3675,7 @@ ParticleSystem:
     m_Bounce:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -3780,10 +3780,10 @@ ParticleSystem:
         m_RotationOrder: 4
     minKillSpeed: 0
     maxKillSpeed: 10000
-    radiusScale: 1
+    radiusScale: 0.0001
     collidesWith:
       serializedVersion: 2
-      m_Bits: 4294967295
+      m_Bits: 23
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
@@ -4815,6 +4815,7 @@ GameObject:
   - component: {fileID: 28471836139028858}
   - component: {fileID: 28471836139028859}
   - component: {fileID: 28471836139028860}
+  - component: {fileID: 7100057996962926988}
   m_Layer: 0
   m_Name: BeeSwarm
   m_TagString: Bees
@@ -4849,7 +4850,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ca7f707d13dc7c409bcdb25a165933e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beeParticle: {fileID: 28471834947223847}
   beeSpeed: 2
+  sleeping: 0
 --- !u!58 &28471836139028860
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4866,3 +4869,24 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.4
+--- !u!50 &7100057996962926988
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28471836139028857}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
