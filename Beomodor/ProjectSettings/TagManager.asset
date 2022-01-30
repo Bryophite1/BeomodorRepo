@@ -8,6 +8,7 @@ TagManager:
   - Bees
   - SingRadius
   - Ground
+  - DetectBees
   layers:
   - Default
   - TransparentFX

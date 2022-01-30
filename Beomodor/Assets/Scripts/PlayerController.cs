@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     public Vector2 playerScale;
     public GameObject singRadius;
     public ParticleSystem songParticle;
+    public ParticleSystem gravParticle;
+    public Animator playerAnim;
 
     public float moveSpeed;
     public float jumpForce;
@@ -73,6 +75,16 @@ public class PlayerController : MonoBehaviour
         {
             playerRenderer.flipX = false;
         }
+
+        //ANIMATIONS
+        if (Input.GetKey(KeyCode.A) && !jumping || Input.GetKey(KeyCode.D) && !jumping)
+        {
+            playerAnim.SetBool("walk", true);
+        }
+        else
+        {
+            playerAnim.SetBool("walk", false);
+        }
     }
     private void Update()
     {
@@ -87,12 +99,14 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))//Temporary
         {
             playerRB.gravityScale = -1;
+            gravParticle.Play();
             transform.eulerAngles = Vector3.forward * 180;
             gravityReversed = true;
         }
         if (Input.GetKeyDown(KeyCode.Q)) //Temporary
         {
             playerRB.gravityScale = 1;
+            gravParticle.Play();
             transform.eulerAngles = Vector3.forward * 0;
             transform.localScale = playerScale;
             gravityReversed = false;

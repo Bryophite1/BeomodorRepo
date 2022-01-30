@@ -14,6 +14,7 @@ public class BeeFollowScript : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player");
+        gameObject.transform.parent = null;
     }
 
     // Update is called once per frame
