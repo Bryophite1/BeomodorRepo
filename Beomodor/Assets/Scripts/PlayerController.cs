@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem songParticle;
     public ParticleSystem gravParticle;
     public Animator playerAnim;
+    public GameObject[] blink;
+    public GameObject[] mouth;
 
     public float moveSpeed;
     public float jumpForce;
@@ -135,6 +137,28 @@ public class PlayerController : MonoBehaviour
         {
             singRadius.SetActive(false);
         }
+
+        //Singing Animations
+        /*if (singing && !playerRenderer.flipX)
+        {
+            blink[0].SetActive(true);
+            mouth[0].SetActive(true);
+        }
+        else
+        {
+            blink[0].SetActive(false);
+            mouth[0].SetActive(false);
+        }
+        if (singing && playerRenderer.flipX)
+        {
+            blink[1].SetActive(true);
+            mouth[1].SetActive(true);
+        }
+        else
+        {
+            blink[1].SetActive(false);
+            mouth[1].SetActive(false);
+        }*/
 
     }
     private void OnTriggerStay2D(Collider2D other)
