@@ -11,12 +11,14 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem songParticle;
     public ParticleSystem gravParticle;
     public Animator playerAnim;
-    public GameObject[] blink;
-    public GameObject[] mouth;
+    public GameObject blink;
+    public GameObject mouth;
+    public PhysicsMaterial2D[] physics;
 
     public float moveSpeed;
     public float jumpForce;
     public float currentVelocity;
+    public Vector3 scaleChange;
 
     public bool jumping;
     public bool jumpRising;
@@ -25,13 +27,15 @@ public class PlayerController : MonoBehaviour
     public bool singing;
     public bool startSinging;
     public bool landing;
+    public bool blinkOverride;
 
     // Start is called before the first frame update
     void Start()
     {
         playerRB = gameObject.GetComponent<Rigidbody2D>();
         playerRenderer = GetComponentInChildren<SpriteRenderer>();
-        playerScale = transform.localScale;
+        scaleChange = transform.localScale;
+        StartCoroutine(Blinking());
     }
 
     // Update is called once per frame
@@ -63,29 +67,40 @@ public class PlayerController : MonoBehaviour
 
         if (directionFlipped && !gravityReversed)
         {
-            playerRenderer.flipX = true;
+            transform.localScale = new Vector3(-scaleChange.x, scaleChange.y, scaleChange.z);
         }
         else if (directionFlipped && gravityReversed)
         {
-            playerRenderer.flipX = false;
+            transform.localScale = new Vector3(scaleChange.x, scaleChange.y, scaleChange.z);
         }
         else if (!directionFlipped && gravityReversed)
         {
-            playerRenderer.flipX = true;
+            transform.localScale = new Vector3(-scaleChange.x, scaleChange.y, scaleChange.z);
         }
         else if (!directionFlipped && !gravityReversed)
         {
-            playerRenderer.flipX = false;
+            transform.localScale = new Vector3(scaleChange.x, scaleChange.y, scaleChange.z);
         }
 
         //ANIMATIONS
         if (Input.GetKey(KeyCode.A) && !jumping || Input.GetKey(KeyCode.D) && !jumping)
         {
+            playerRB.sharedMaterial = physics[1];
             playerAnim.SetBool("walk", true);
         }
         else
         {
+            playerRB.sharedMaterial = physics[0];
             playerAnim.SetBool("walk", false);
+        }
+
+        if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        {
+            playerRB.sharedMaterial = physics[1];
+        }
+        else
+        {
+            playerRB.sharedMaterial = physics[0];
         }
     }
     private void Update()
@@ -139,26 +154,19 @@ public class PlayerController : MonoBehaviour
         }
 
         //Singing Animations
-        /*if (singing && !playerRenderer.flipX)
+        if (singing)
         {
-            blink[0].SetActive(true);
-            mouth[0].SetActive(true);
+            blink.SetActive(true);
+            mouth.SetActive(true);
         }
         else
         {
-            blink[0].SetActive(false);
-            mouth[0].SetActive(false);
+            if (!blinkOverride)
+            {
+                blink.SetActive(false);
+            }
+            mouth.SetActive(false);
         }
-        if (singing && playerRenderer.flipX)
-        {
-            blink[1].SetActive(true);
-            mouth[1].SetActive(true);
-        }
-        else
-        {
-            blink[1].SetActive(false);
-            mouth[1].SetActive(false);
-        }*/
 
     }
     private void OnTriggerStay2D(Collider2D other)
@@ -206,5 +214,18 @@ public class PlayerController : MonoBehaviour
         landing = true;
         yield return new WaitForSeconds(0.1f);
         landing = false;
+    }
+    public IEnumerator Blinking()
+    {
+        if (!singing)
+        {
+            blinkOverride = true;
+            blink.SetActive(true);
+            yield return new WaitForSeconds(0.3f);
+            blink.SetActive(false);
+            blinkOverride = false;
+        }
+        yield return new WaitForSeconds(Random.Range(2, 3));
+        StartCoroutine(Blinking());
     }
 }
