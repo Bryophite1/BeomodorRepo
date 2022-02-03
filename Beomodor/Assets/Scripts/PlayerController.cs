@@ -28,6 +28,10 @@ public class PlayerController : MonoBehaviour
     public bool startSinging;
     public bool landing;
     public bool blinkOverride;
+    public bool gravTouch;
+    public bool gravWait;
+
+    public int gravState;
 
     // Start is called before the first frame update
     void Start()
@@ -113,15 +117,17 @@ public class PlayerController : MonoBehaviour
         }
 
         //GRAVSHIFT
-        if (Input.GetKeyDown(KeyCode.E))//Temporary
+        if (gravState == 0 && gravTouch)//Temporary
         {
+            Debug.Log("Up");
             playerRB.gravityScale = -1;
             gravParticle.Play();
             transform.eulerAngles = Vector3.forward * 180;
             gravityReversed = true;
         }
-        if (Input.GetKeyDown(KeyCode.Q)) //Temporary
+        if (gravState == 1 && gravTouch) //Temporary
         {
+            Debug.Log("Down");
             playerRB.gravityScale = 1;
             gravParticle.Play();
             transform.eulerAngles = Vector3.forward * 0;
@@ -182,6 +188,15 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(Land());
         }
+        if (other.CompareTag("Mushrooms"))
+        {
+            if (!gravTouch && !gravWait)
+            {
+                StartCoroutine(GravShift());
+            }
+            
+            
+        }
     }
     public IEnumerator Jump()
     {
@@ -227,5 +242,23 @@ public class PlayerController : MonoBehaviour
         }
         yield return new WaitForSeconds(Random.Range(2, 3));
         StartCoroutine(Blinking());
+    }
+    public IEnumerator GravShift()
+    {
+        if (gravState == 0)
+        {
+            gravState = 1;
+        }
+        else if (gravState == 1)
+        {
+            gravState = 0;
+        }
+        gravTouch = true;
+        yield return new WaitForEndOfFrame();
+        gravTouch = false;
+        gravWait = true;
+        yield return new WaitForSeconds(0.4f);
+        gravWait = false;
+        
     }
 }

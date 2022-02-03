@@ -9,16 +9,17 @@ TagManager:
   - SingRadius
   - Ground
   - DetectBees
+  - Mushrooms
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
-  - 
-  - 
+  - NoTouch
+  - Puffsmoke
+  - Enemy
   - 
   - 
   - 
