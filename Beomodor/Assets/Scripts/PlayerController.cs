@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,10 +15,12 @@ public class PlayerController : MonoBehaviour
     public GameObject blink;
     public GameObject mouth;
     public PhysicsMaterial2D[] physics;
+    public Image canvasFlat;
 
     public float moveSpeed;
     public float jumpForce;
     public float currentVelocity;
+    public float canvasFlatAlphaValue;
     public Vector3 scaleChange;
 
     public bool jumping;
@@ -30,6 +33,7 @@ public class PlayerController : MonoBehaviour
     public bool blinkOverride;
     public bool gravTouch;
     public bool gravWait;
+    public bool sceneChange;
 
     public int gravState;
 
@@ -40,6 +44,9 @@ public class PlayerController : MonoBehaviour
         playerRenderer = GetComponentInChildren<SpriteRenderer>();
         scaleChange = transform.localScale;
         StartCoroutine(Blinking());
+
+        canvasFlatAlphaValue = 1;
+        canvasFlat = GameObject.Find("CanvasFlat").GetComponent<Image>();
     }
 
     // Update is called once per frame
@@ -106,6 +113,13 @@ public class PlayerController : MonoBehaviour
         {
             playerRB.sharedMaterial = physics[0];
         }
+
+        if (!sceneChange && canvasFlat.color.a > 0)
+        {
+            canvasFlat.color = new Color(0, 0, 0, canvasFlatAlphaValue);
+        }
+        canvasFlatAlphaValue -= 0.01f;
+
     }
     private void Update()
     {
@@ -174,6 +188,12 @@ public class PlayerController : MonoBehaviour
             mouth.SetActive(false);
         }
 
+        //JumpLand
+        if(!jumping && landing)
+        {
+            playerAnim.SetTrigger("land");
+        }
+
     }
     private void OnTriggerStay2D(Collider2D other)
     {
@@ -201,6 +221,9 @@ public class PlayerController : MonoBehaviour
     public IEnumerator Jump()
     {
         jumping = true;
+        playerAnim.SetTrigger("jump");
+        playerAnim.ResetTrigger("land");
+        yield return new WaitForSeconds(0.3f);
         jumpRising = true;
         yield return new WaitForSeconds(0.1f);
         //playerRB.velocity = new Vector3(playerRB.velocity.x, jumpForce * Time.deltaTime, 0);
