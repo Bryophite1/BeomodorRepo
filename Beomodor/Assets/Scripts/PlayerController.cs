@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem gravParticle;
     public Animator playerAnim;
     public GameObject blink;
+    public GameObject eyes;
     public GameObject mouth;
     public PhysicsMaterial2D[] physics;
     public Image canvasFlat;
@@ -116,13 +118,42 @@ public class PlayerController : MonoBehaviour
 
         if (!sceneChange && canvasFlat.color.a > 0)
         {
-            canvasFlat.color = new Color(0, 0, 0, canvasFlatAlphaValue);
+            canvasFlatAlphaValue -= 0.01f;
         }
-        canvasFlatAlphaValue -= 0.01f;
 
+        if (sceneChange && canvasFlatAlphaValue < 1)
+        {
+            canvasFlatAlphaValue += 0.05f;
+        }
+
+        if (sceneChange && canvasFlatAlphaValue >= 1)
+        {
+            int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+            if (SceneManager.sceneCountInBuildSettings > nextSceneIndex)
+            {
+                SceneManager.LoadScene(nextSceneIndex);
+            }
+        }
+
+        canvasFlat.color = new Color(0, 0, 0, canvasFlatAlphaValue);
+
+        //Eyes
+        if (blink.active == true)
+        {
+            eyes.SetActive(false);
+        }
+        else
+        {
+            eyes.SetActive(true);
+        }
     }
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
         if (Input.GetKeyDown(KeyCode.Space) && !jumping && !singing)
         {
             StartCoroutine(Jump());
@@ -214,8 +245,10 @@ public class PlayerController : MonoBehaviour
             {
                 StartCoroutine(GravShift());
             }
-            
-            
+        }
+        if (other.CompareTag("LevelEnd"))
+        {
+            sceneChange = true;
         }
     }
     public IEnumerator Jump()
@@ -223,7 +256,7 @@ public class PlayerController : MonoBehaviour
         jumping = true;
         playerAnim.SetTrigger("jump");
         playerAnim.ResetTrigger("land");
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.2f);
         jumpRising = true;
         yield return new WaitForSeconds(0.1f);
         //playerRB.velocity = new Vector3(playerRB.velocity.x, jumpForce * Time.deltaTime, 0);
