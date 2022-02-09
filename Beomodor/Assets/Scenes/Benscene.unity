@@ -5639,7 +5639,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2, y: 2}
+  m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
 --- !u!4 &391965940
 Transform:
@@ -7266,6 +7266,14 @@ PrefabInstance:
       propertyPath: eyes
       value: 
       objectReference: {fileID: 866686406}
+    - target: {fileID: 3415384746288450511, guid: 2a0ee91159acad3408e202ad22ac0880, type: 3}
+      propertyPath: ShapeModule.arc.mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3415384746288450511, guid: 2a0ee91159acad3408e202ad22ac0880, type: 3}
+      propertyPath: ShapeModule.arc.spread
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a0ee91159acad3408e202ad22ac0880, type: 3}
 --- !u!1001 &3730151167381261721
