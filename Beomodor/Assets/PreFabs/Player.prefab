@@ -592,6 +592,7 @@ MonoBehaviour:
   gravParticle: {fileID: 3415384746288450511}
   playerAnim: {fileID: 3415384745779876409}
   blink: {fileID: 3415384745380506999}
+  eyes: {fileID: 866686406}
   mouth: {fileID: 3415384746229288147}
   physics:
   - {fileID: 6200000, guid: 05ab76f630e4a6441b8b4be6946e2799, type: 2}
