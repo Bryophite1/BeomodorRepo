@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     public bool gravTouch;
     public bool gravWait;
     public bool sceneChange;
+    private bool startJump;
 
     public int gravState;
 
@@ -228,15 +229,18 @@ public class PlayerController : MonoBehaviour
     }
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (!jumpRising && other.CompareTag("Ground"))
+        //if (!jumpRising && other.CompareTag("Ground"))
         {
-            jumping = false;
+            //jumping = false;
         }
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!jumpRising && other.CompareTag("Ground"))
+        if (!startJump && other.CompareTag("Ground"))
         {
+            StopCoroutine(Jump());
+            jumpRising = false;
+            startJump = false;
             StartCoroutine(Land());
         }
         if (other.CompareTag("Mushrooms"))
@@ -256,12 +260,14 @@ public class PlayerController : MonoBehaviour
         jumping = true;
         playerAnim.SetTrigger("jump");
         playerAnim.ResetTrigger("land");
+        startJump = true;
         yield return new WaitForSeconds(0.2f);
         jumpRising = true;
         yield return new WaitForSeconds(0.1f);
         //playerRB.velocity = new Vector3(playerRB.velocity.x, jumpForce * Time.deltaTime, 0);
         yield return new WaitForSeconds(0.2f);
         jumpRising = false;
+        startJump = false;
     }
     public IEnumerator SingBegin()
     {
@@ -282,6 +288,7 @@ public class PlayerController : MonoBehaviour
     }
     public IEnumerator Land()
     {
+        jumping = false;
         landing = true;
         yield return new WaitForSeconds(0.1f);
         landing = false;
