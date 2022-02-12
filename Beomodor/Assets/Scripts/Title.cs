@@ -12,6 +12,7 @@ public class Title : MonoBehaviour
     public GameObject cred_page;
     public bool isActive;
     public bool sceneChange;
+    public int selectedButton;
 
 
     // Start is called before the first frame update
@@ -25,6 +26,54 @@ public class Title : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.position = buttons[selectedButton].transform.position;
+
+        if (Input.GetKeyDown(KeyCode.D) && !cred_page.active && !HTP_page.active)
+        {
+            selectedButton += 1;
+        }
+        if (Input.GetKeyDown(KeyCode.A) && !cred_page.active && !HTP_page.active)
+        {
+            selectedButton -= 1;
+        }
+
+        if(selectedButton > 3)
+        {
+            selectedButton = 0;
+        }
+
+        if(selectedButton < 0)
+        {
+            selectedButton = 3;
+        }
+
+        if (selectedButton == 0 && Input.GetKeyDown(KeyCode.Space))
+        {
+            int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+            if (SceneManager.sceneCountInBuildSettings > nextSceneIndex)
+            {
+                SceneManager.LoadScene(nextSceneIndex);
+            }
+        }
+
+        if(selectedButton == 1 && Input.GetKeyDown(KeyCode.Space))
+        {
+            isActive = !isActive;
+            HTP_page.SetActive(isActive);
+        }
+
+        if (selectedButton == 2 && Input.GetKeyDown(KeyCode.Space))
+        {
+            isActive = !isActive;
+            cred_page.SetActive(isActive);
+        }
+
+        if (selectedButton == 3 && Input.GetKeyDown(KeyCode.Space))
+        {
+            Application.Quit();
+        }
+
+        /*
         if (Input.GetKeyDown("d")) {
 	    transform.Translate(Vector3.right * 5);
 	}
@@ -55,7 +104,7 @@ public class Title : MonoBehaviour
 	    	cred_page.SetActive(isActive);
             }
 		
-	}
+	}*/
 
     }
 }
