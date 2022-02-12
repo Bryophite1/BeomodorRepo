@@ -5,7 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class Title : MonoBehaviour
 {
-    
+    public GameObject[] buttons;
+
+
     public GameObject HTP_page;
     public GameObject cred_page;
     public bool isActive;
