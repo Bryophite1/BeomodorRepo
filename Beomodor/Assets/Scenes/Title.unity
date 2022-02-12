@@ -2442,10 +2442,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\nBenjamin Pielocik: Character Artist, Asset Designer, Effects Designer,
-    Lead Programmer, Music, Intro Level\n\nAnthony Gatturna: Environmental Artist,
-    Background Artist, Level Designer, \n\nJustin Meyer: Level Designer, UI Artist\n\nTobey
-    Julian Joseph: Sound Designer"
+  m_Text: "\t\t\t\t\t\t\t\t\t\t\t\tCredits:\n\nBenjamin Pielocik: Character Artist,
+    Asset Designer, Effects Designer, Lead Programmer, Music, Intro Level\n\nAnthony
+    Gatturna: Environmental Artist, Background Artist, Level Designer, \n\nJustin
+    Meyer: Level Designer, UI Artist\n\nTobey Julian Joseph: Sound Designer"
 --- !u!222 &2102342910
 CanvasRenderer:
   m_ObjectHideFlags: 0
