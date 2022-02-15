@@ -18,11 +18,15 @@ public class PlayerController : MonoBehaviour
     public GameObject mouth;
     public PhysicsMaterial2D[] physics;
     public Image canvasFlat;
+    public AudioSource playerAudio;
+    public AudioClip[] playerSound;
+    public GameObject shroomAudio;
 
     public float moveSpeed;
     public float jumpForce;
     public float currentVelocity;
     public float canvasFlatAlphaValue;
+    public float singVolume;
     public Vector3 scaleChange;
 
     public bool jumping;
@@ -147,6 +151,24 @@ public class PlayerController : MonoBehaviour
         {
             eyes.SetActive(true);
         }
+
+        //Singing Volume Adjuster
+        if (!playerAudio.isPlaying && singing)
+        {
+            playerAudio.PlayOneShot(playerSound[0]);
+        }
+        playerAudio.volume = singVolume;
+
+        if (singing && singVolume < 0.5)
+        {
+            singVolume += 0.01f;
+
+        }
+        else if (!singing && singVolume > 0)
+        {
+            singVolume -= 0.1f;
+        }
+        
     }
     private void Update()
     {
@@ -199,6 +221,8 @@ public class PlayerController : MonoBehaviour
             {
                 StartCoroutine(SingBegin());
             }
+            
+
         }
         else
         {
@@ -308,6 +332,7 @@ public class PlayerController : MonoBehaviour
     }
     public IEnumerator GravShift()
     {
+        Instantiate(shroomAudio, gameObject.transform);
         if (gravState == 0)
         {
             gravState = 1;

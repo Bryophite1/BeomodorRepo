@@ -10,6 +10,7 @@ public class IronSmoker : MonoBehaviour
     public GameObject smokeOrigin;
     public Animator ironSmokerAnim;
     public Vector3 scaleChange;
+    public AudioSource walkAudio;
 
     public float walkSpeed;
     public float waitLength;
@@ -48,10 +49,12 @@ public class IronSmoker : MonoBehaviour
         //Animations
         if (walking)
         {
+            walkAudio.volume = 0.3f;
             ironSmokerAnim.SetBool("Walk", true);
         }
         else
         {
+            walkAudio.volume = 0;
             ironSmokerAnim.SetBool("Walk", false);
         }
 

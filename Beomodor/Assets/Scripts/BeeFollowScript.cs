@@ -6,6 +6,7 @@ public class BeeFollowScript : MonoBehaviour
 {
     private GameObject player;
     public ParticleSystem beeParticle;
+    public AudioSource beeAudio;
 
     public float beeSpeed;
     public bool sleeping; 
@@ -23,6 +24,7 @@ public class BeeFollowScript : MonoBehaviour
         if (sleeping)
         {
             transform.position = transform.position + Vector3.down * beeSpeed * Time.deltaTime;
+            beeAudio.pitch -= 0.01f;
         }
     }
     private void OnTriggerStay2D(Collider2D other)
